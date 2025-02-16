@@ -4,6 +4,7 @@ import torch.nn as nn
 import torch.nn.functional as F
 from tqdm import tqdm
 from pathlib import Path
+from tokenizers import Tokenizer
 import matplotlib.pyplot as plt
 
 torch.manual_seed(1357)
@@ -37,7 +38,7 @@ class ShakespeareDataset:
         y = torch.stack([self.data[i+1:i+self.block_size+1] for i in ix])
         return x,y
 
-tokenizer = CharacterLevelTokenizer(data)
+tokenizer = tokenizer = Tokenizer.from_file('tokenizer/potter.json')
 
 #Training
 
