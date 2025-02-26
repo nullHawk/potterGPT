@@ -1,11 +1,15 @@
 import torch
-from model import PotterGPT, Config 
+import os
+from model import PotterGPT, Config, CharacterLevelTokenizer
 from tokenizers import Tokenizer
 from dataclasses import dataclass
 
 model_path = 'potterGPT/potterGPT.pth'
+with open('data/harry_potter_data', 'r', encoding='utf-8') as f:
+    data = f.read()
 
-tokenizer = Tokenizer.from_file('tokenizer/potter.json')
+
+tokenizer = CharacterLevelTokenizer(data)
 
 
 
@@ -23,6 +27,9 @@ for length in [1000]:
     text=f'generated ({length} tokens)\n{"="*50}\n{generated}\n{"="*50}\n\n'
     generated_texts.append(text)
 
-with open('generated.txt','w') as f:
+print(generated_texts[0])
+
+os.makedirs('output', exist_ok=True)
+with open('output/generated.txt', 'w+') as f:
     for text in generated_texts:
         f.write(text)

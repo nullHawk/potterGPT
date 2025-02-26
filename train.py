@@ -11,7 +11,7 @@ torch.manual_seed(1357)
 with open('data/harry_potter_data', 'r', encoding='utf-8') as f:
     data = f.read()
 
-class ShakespeareDataset:
+class Dataset:
     def __init__(self,Config, is_test=False) -> None:
         self.tokenizer = CharacterLevelTokenizer(data)
         self.is_test = is_test
@@ -38,12 +38,13 @@ class ShakespeareDataset:
         y = torch.stack([self.data[i+1:i+self.block_size+1] for i in ix])
         return x,y
 
-tokenizer = tokenizer = Tokenizer.from_file('tokenizer/potter.json')
+# tokenizer = tokenizer = Tokenizer.from_file('tokenizer/potter.json')
+tokenizer = CharacterLevelTokenizer(data)
 
 #Training
 
-train_ds = ShakespeareDataset(Config)
-val_ds = ShakespeareDataset(Config, is_test=True)
+train_ds = Dataset(Config)
+val_ds = Dataset(Config, is_test=True)
 
 lm = PotterGPT(Config)
 lm = lm.to(device=Config.device)
